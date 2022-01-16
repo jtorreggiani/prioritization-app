@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
@@ -18,18 +20,6 @@ const PRIORITY_MAP = Object.freeze({
   medium: 2,
   low: 3,
 })
-
-
-function SelectInput ({ task, fieldName, onChange }) {
-  return (
-    <select value={task[fieldName]} onChange={(e) => onChange(e, fieldName, task.id)}>
-      <option value="critical">Critical</option>
-      <option value="high">High</option>
-      <option value="medium">Medium</option>
-      <option value="low">Low</option>
-    </select>
-  )
-}
 
 function sortCompare (a, b) {
   const aPriority = PRIORITY_MAP[a.urgency] + PRIORITY_MAP[a.importance]
@@ -68,17 +58,6 @@ function calculateDueDate (todo) {
   const dateString = `${date.getFullYear()}-${zeroPaddedMonth(date)}-${zeroPaddedDate(date)}`;
 
   return dateString
-}
-
-function newTodo () {
-  const id = uuidv4()
-
-  return {
-    id,
-    title: '',
-    urgency: 'low',
-    importance: 'low',
-  }
 }
 
 function daysBetween(date1, date2) {
@@ -149,6 +128,17 @@ function filterTasks (tasksDB, filters) {
                .sort(sortCompare)
 }
 
+function SelectInput ({ task, fieldName, onChange }) {
+  return (
+    <select value={task[fieldName]} onChange={(e) => onChange(e, fieldName, task.id)}>
+      <option value="critical">Critical</option>
+      <option value="high">High</option>
+      <option value="medium">Medium</option>
+      <option value="low">Low</option>
+    </select>
+  )
+}
+
 function App() {
   const [tasksDB, setTasks] = useState(LOCAL_DATA)
   const [filters, setFilters] = useState({
@@ -185,8 +175,13 @@ function App() {
   }
 
   function addTodo () {
-    const newTask = newTodo();
-    tasksDB[newTask.id] = { id: newTask.id, ...newTask };
+    const id = uuidv4();
+    tasksDB[id] = {
+      id,
+      title: '',
+      urgency: 'low',
+      importance: 'low',
+    };
     window.localStorage.setItem('TASK_DATA', JSON.stringify(tasksDB));
     setTasks({...tasksDB});
   }
@@ -194,6 +189,14 @@ function App() {
   function removeTodo (id) {
     delete tasksDB[id]
     setTasks({...tasksDB})
+  }
+
+  function duplicateTodo (existingId) {
+    const existingTask = tasksDB[existingId]
+    const id = uuidv4();
+    tasksDB[id] = { ...existingTask, id };
+    window.localStorage.setItem('TASK_DATA', JSON.stringify(tasksDB));
+    setTasks({...tasksDB});
   }
 
   function handleSearch (e) {
@@ -260,10 +263,10 @@ function App() {
 
       <table>
         <colgroup>
-          <col span="1" width="50%" />
-          <col span="1" width="10%" />
-          <col span="1" width="5%" />
-          <col span="1" width="5%" />
+          <col span="1" width="40%" />
+          <col span="1" />
+          <col span="1" />
+          <col span="1" />
           <col span="1" />
           <col span="1" />
         </colgroup>
@@ -284,7 +287,7 @@ function App() {
               <tr>
                 <td>
                   <input
-                    style={{ width: '98%'}}
+                    style={{ width: '95%'}}
                     type="text"
                     value={task.title}
                     onChange={(e) => handleTitleChange(e, task.id)}
@@ -304,7 +307,6 @@ function App() {
                     type="date"
                     id="dueDate"
                     name="dueDate"
-                    style={{ width: '80%'}}
                     value={calculateDueDate(task)}
                     onChange={(e) => updateDueDate(e, task.id)}
                   />
@@ -313,14 +315,15 @@ function App() {
                 <td><SelectInput fieldName="importance" task={task} onChange={handlePriorityChange} /></td>
                 <td>
                   <input
-                    style={{ width: '98%'}}
+                    style={{ width: '95%'}}
                     type="text"
                     value={task.tags || ''}
                     onChange={(e) => handleTagsChange(e, task.id)}
                   />
                 </td>
                 <td>
-                  <button onClick={() => removeTodo(task.id)}>Remove</button>
+                  <button onClick={() => removeTodo(task.id)}>🗑️</button>
+                  <button onClick={() => duplicateTodo(task.id)}>➕</button>
                 </td>
               </tr>
             )

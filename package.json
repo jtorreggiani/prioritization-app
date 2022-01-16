@@ -50,6 +50,7 @@
     "mini-css-extract-plugin": "2.4.7"
   },
   "devDependencies": {
+    "@types/uuid": "^8.3.4",
     "mini-css-extract-plugin": "2.4.5"
   }
 }

@@ -10,18 +10,9 @@ td, th {
   padding: 8px;
 }
 
-/* tr:nth-child(even) {
-  background-color: #dddddd;
-} */
-
-/* input {
-  width: 100%;
-} */
-
 .header {
   padding: 0.6em;
 }
-
 
 button {
   margin-right: 0.6em;
