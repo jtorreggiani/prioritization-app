@@ -17,7 +17,14 @@ export function saveToLocalStorage (data) {
 }
 
 export function loadProjectString () {
-  return localStorage.getItem(PROJECT_FILTERS_KEY) || '';
+  const existingData = localStorage.getItem(PROJECT_FILTERS_KEY);
+
+  if (existingData && existingData !== '') {
+    return existingData;
+  } else {
+    localStorage.setItem(PROJECT_FILTERS_KEY, 'work side-project recreation');
+    return {};
+  }
 }
 
 export function loadProjects () {

@@ -5,4 +5,5 @@ export const STATUSES = Object.freeze({
   COMPLETED: 'completed',
   DELEGATED: 'delegated',
   BLOCKED: 'blocked',
+  SCHEDULED: 'scheduled',
 });

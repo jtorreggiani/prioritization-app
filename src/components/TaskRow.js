@@ -7,9 +7,9 @@ import DurationSelect from './DurationSelect';
 function TaskRow ({ task }) {
   return (
     <tr>
-      <td>
+      <td className="title-column">
         <input
-          style={{ width: '95%'}}
+          style={{ width: '95%' }}
           type="text"
           value={task.title}
           onChange={(e) => task.set('title', e.target.value)}

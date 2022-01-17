@@ -6,7 +6,7 @@ function DurationSelect ({
   defaultOption = { value: '', label: 'None' },
 }) {
   return (
-    <select value={duration} onChange={(e) => onChange(e)}>
+    <select className="task-select" value={duration} onChange={(e) => onChange(e)}>
       <option value={defaultOption.value}>{defaultOption.label}</option>
       <option value="one-minute">1 minute</option>
       <option value="five-minutes">5 minutes</option>

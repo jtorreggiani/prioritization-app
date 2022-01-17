@@ -1,25 +1,35 @@
-import React, { useState } from 'react';
-import { loadProjectString } from '../utils/local-storage';
+import React, { useState, useContext } from 'react';
+import { ProjectsContext } from '../contexts/projects';
+import { useProjects } from '../hooks/projects';
 
 function ProjectFilterSelect ({
   project,
-  onSelectProjectFilter,
+  onChange,
+  onSave,
   defaultOption = { value: '', label: 'Any' }
 }) {
   const [isEditing, setIsEditing] = useState(false);
-  const [projects, setProjects] = useState(loadProjectString());
+  const {
+    projects,
+    projectString,
+    setProjectString,
+    saveProjects
+  } = useContext(ProjectsContext);
 
   function toggleEditing () {
+    if (isEditing) {
+      saveProjects();
+    }
+
     setIsEditing(!isEditing)
+
   }
 
-  function onChange (e: React.FormEvent<HTMLInputElement>) {
+  function onStringChange (e: React.FormEvent<HTMLInputElement>) {
     const value = e.target.value;
     localStorage.setItem('PROJECT_FILTERS', value);
-    setProjects(value);
+    setProjectString(value);
   }
-
-  const options = projects.split(' ');
 
   if (isEditing) {
     return (
@@ -28,7 +38,13 @@ function ProjectFilterSelect ({
           Project
           <button className="edit-button" onClick={toggleEditing}>✔️</button>
         </label>
-        <input type="text" value={projects} onChange={onChange} className="projects-input" />
+
+        <input
+          type="text"
+          value={projectString}
+          onChange={onStringChange}
+          className="project-input"
+        />
       </>
     )
   } else {
@@ -39,9 +55,9 @@ function ProjectFilterSelect ({
           <button className="edit-button" onClick={toggleEditing}>✎</button>
         </label>
 
-        <select key={project} value={project} onChange={onSelectProjectFilter}>
+        <select key={project} value={project} onChange={onChange} className="filter-select">
           <option value={defaultOption.value}>{defaultOption.label}</option>
-          {options.map(project => {
+          {projects.map(project => {
             return <option key={project} value={project}>{project}</option>
           })}
         </select>

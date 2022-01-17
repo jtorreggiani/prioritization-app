@@ -8,6 +8,19 @@ td, th {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;
+  min-width: 120px;
+}
+
+.title-column {
+  width: 30%;
+}
+
+.task-select {
+  width: 98%;
+}
+
+.filter-select {
+  min-width: 120px;
 }
 
 .header {

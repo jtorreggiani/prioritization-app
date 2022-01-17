@@ -48,7 +48,8 @@ function TaskFilters ({ filters, createTask }) {
         <div className="filter-input">
           <ProjectFilterSelect
             project={filters.project}
-            onSelectProjectFilter={filters.onSelectProjectFilter}
+            onChange={(e) => filters.set('project', e.target.value)}
+            onSave={(e) => filters.set('project', '')}
             default={{ value: 'any', label: 'Any'}}
           />
         </div>

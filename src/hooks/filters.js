@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { loadProjectString } from '../utils/local-storage';
 
 const DEFAULT_FILTERS = Object.freeze({
   query: '',

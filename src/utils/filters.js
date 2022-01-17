@@ -149,6 +149,8 @@ export function statusFilter (task, filters) {
       return taskTask === STATUSES.COMPLETED;
     case STATUSES.DELEGATED:
       return taskTask === STATUSES.DELEGATED;
+    case STATUSES.DELEGATED:
+      return taskTask === STATUSES.SCHEDULED;
     default:
       console.log(`No filter ${filters.status}.`);
   }
