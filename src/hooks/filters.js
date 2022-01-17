@@ -1,17 +1,9 @@
 import React, { useState } from 'react';
-import { loadProjectString } from '../utils/local-storage';
-
-const DEFAULT_FILTERS = Object.freeze({
-  query: '',
-  status: 'incomplete',
-  dateRange: '',
-  priority: 'highest-priority',
-  project: '',
-});
+import { loadFilters, saveFiltersToLocalStorage } from '../utils/local-storage';
 
 export function useFilters () {
   const [query, setQuery] = useState('');
-  const [filters, setFilters] = useState(DEFAULT_FILTERS);
+  const [filters, setFilters] = useState(loadFilters());
 
   function onSearchChange (e: React.ChangeEvent<HTMLInputElement>) {
     setQuery(e.target.value);
@@ -29,7 +21,8 @@ export function useFilters () {
   return {
     ...filters,
     set: (key, value) => {
-      setFilters({...filters, [key]: value });
+      setFilters({ ...filters, [key]: value });
+      saveFiltersToLocalStorage({ ...filters, [key]: value });
     },
     onSearchChange,
     onSearchKeyDown,
