@@ -108,6 +108,12 @@ export function projectFilter (task, filters) {
   return filters.project === task.project;
 }
 
+export function durationFilter (task, filters) {
+  if (filters.duration === '' || !filters.duration) return true
+
+  return filters.duration === task.duration;
+}
+
 export function dateFilter (task, filters) {
   const dueDate = dayjs(task.dueDate);
   const today = dayjs();
@@ -155,5 +161,6 @@ export function filterTasks (tasksDB, filters) {
                .filter(task => searchFilter(task, filters))
                .filter(task => statusFilter(task, filters))
                .filter(task => projectFilter(task, filters))
+               .filter(task => durationFilter(task, filters))
                .sort((a, b) => prioritySort(a, b, filters))
 }

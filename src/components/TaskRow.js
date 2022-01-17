@@ -2,6 +2,7 @@ import React from 'react';
 import PrioritySelect from './PrioritySelect';
 import StatusSelect from './StatusSelect';
 import ProjectSelect from './ProjectSelect';
+import DurationSelect from './DurationSelect';
 
 function TaskRow ({ task }) {
   return (
@@ -49,6 +50,12 @@ function TaskRow ({ task }) {
           fieldName="importance"
           priority={task.importance}
           onChange={(e) => task.set('importance', e.target.value)}
+        />
+      </td>
+      <td>
+        <DurationSelect
+          duration={task.duration}
+          onChange={(e) => task.set('duration', e.target.value)}
         />
       </td>
       <td>

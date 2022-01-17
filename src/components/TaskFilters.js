@@ -3,6 +3,7 @@ import StatusSelect from './StatusSelect';
 import TimeframeSelect from './TimeframeSelect';
 import PriorityFilterSelect from './PriorityFilterSelect';
 import ProjectFilterSelect from './ProjectFilterSelect';
+import DurationSelect from './DurationSelect';
 
 function TaskFilters ({ filters, createTask }) {
   return (
@@ -23,7 +24,7 @@ function TaskFilters ({ filters, createTask }) {
           <label>Timeframe</label>
           <TimeframeSelect
             dateRange={filters.dateRange}
-            onChange={filters.onDateFilterChange}
+            onChange={(e) => filters.set('dateRange', e.target.value)}
           />
         </div>
 
@@ -31,7 +32,7 @@ function TaskFilters ({ filters, createTask }) {
           <label>Status</label>
           <StatusSelect
             status={filters.status}
-            onChange={filters.onStatusFilterChange}
+            onChange={(e) => filters.set('status', e.target.value)}
             showIncomplete="true"
           />
         </div>
@@ -40,7 +41,7 @@ function TaskFilters ({ filters, createTask }) {
           <label>Prioritization</label>
           <PriorityFilterSelect
             priority={filters.priority}
-            onChange={filters.onPriorityFilterChange}
+            onChange={(e) => filters.set('priority', e.target.value)}
           />
         </div>
 
@@ -49,6 +50,15 @@ function TaskFilters ({ filters, createTask }) {
             project={filters.project}
             onSelectProjectFilter={filters.onSelectProjectFilter}
             default={{ value: 'any', label: 'Any'}}
+          />
+        </div>
+
+        <div className="filter-input">
+          <label>Duration</label>
+          <DurationSelect
+            project={filters.duration}
+            onChange={(e) => filters.set('duration', e.target.value)}
+            defaultOption={{ value: '', label: 'Any'}}
           />
         </div>
       </div>

@@ -46,7 +46,6 @@ export function useTasks () {
 
   function setDueDate (id, value) {
     taskIndex[id]['dueDate'] = value;
-    debugger;
     saveTaskIndex({ ...taskIndex });
   }
 
