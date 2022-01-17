@@ -29,11 +29,11 @@ export function calculateUrgencyForTask (task) {
 }
 
 export function sortCompare (a, b) {
-  const aUrgency = calculateUrgencyForTask(a);
+  const aUrgency = PRIORITY_MAP[calculateUrgencyForTask(a)];
   const aImportance = PRIORITY_MAP[a.importance];
   const aPriority = aUrgency + aImportance;
 
-  const bUrgency = calculateUrgencyForTask(b);
+  const bUrgency = PRIORITY_MAP[calculateUrgencyForTask(b)];
   const bImportance = PRIORITY_MAP[b.importance];
   const bPriority = bUrgency + bImportance;
 
