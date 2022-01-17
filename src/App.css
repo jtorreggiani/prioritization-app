@@ -28,6 +28,7 @@ button {
 
 label {
   display: block;
+  /* margin-bottom: 0.4em; */
 }
 
 .filter-input-group {
@@ -38,4 +39,16 @@ label {
 .filter-input {
   display: inline-block;
   margin-right: 0.6em;
+}
+
+.edit-button {
+  display: inline-block;
+  margin-left: 0.2em;
+  padding: 0;
+  background: white;
+  border: none;
+}
+
+.projects-input {
+  width: 20em;
 }

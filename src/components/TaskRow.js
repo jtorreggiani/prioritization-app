@@ -1,31 +1,9 @@
 import React from 'react';
 import PrioritySelect from './PrioritySelect';
 import StatusSelect from './StatusSelect';
-import { calculateDueDate } from '../utils/dates';
-import { calculateUrgencyForTask } from '../utils/filters';
+import ProjectSelect from './ProjectSelect';
 
 function TaskRow ({ task }) {
-
-  function onTitleChange (e: React.ChangeEvent<HTMLInputElement>, id: string) {
-    task.set('title', e.target.value);
-  }
-
-  function onPriorityChange (e: React.ChangeEvent<HTMLSelectElement>, key: string) {
-    task.setPriority(key, e.target.value);
-  }
-
-  function onDueDateChange (e: React.ChangeEvent<HTMLInputElement>, id: string) {
-    task.setDueDate(e.target.value);
-  }
-
-  function onTagsChange (e: React.ChangeEvent<HTMLInputElement>) {
-    task.set('tags', e.target.value);
-  }
-
-  function onStatusChange (e: React.ChangeEvent<HTMLSelectElement>, id: string) {
-    task.set('status', e.target.value);
-  }
-
   return (
     <tr>
       <td>
@@ -33,15 +11,19 @@ function TaskRow ({ task }) {
           style={{ width: '95%'}}
           type="text"
           value={task.title}
-          onChange={(e) => onTitleChange(e, task.id)}
+          onChange={(e) => task.set('title', e.target.value)}
+        />
+      </td>
+      <td>
+        <ProjectSelect
+          project={task.project}
+          onChange={(e) => task.set('project', e.target.value)}
         />
       </td>
       <td>
         <StatusSelect
           status={task.status}
-          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-            onStatusChange(e, task.id)
-          }}
+          onChange={(e) => task.set('status', e.target.value)}
         />
       </td>
       <td>
@@ -49,16 +31,16 @@ function TaskRow ({ task }) {
           type="date"
           id="dueDate"
           name="dueDate"
-          value={calculateDueDate(task)}
-          onChange={(e) => onDueDateChange(e, task.id)}
+          value={task.dueDate}
+          onChange={(e) => task.set('dueDate', e.target.value)}
         />
       </td>
       <td>
         <PrioritySelect
           task={task}
           fieldName="urgency"
-          priority={calculateUrgencyForTask(task)}
-          onChange={onPriorityChange}
+          priority={task.urgency}
+          onChange={(e) => task.set('urgency', e.target.value)}
         />
       </td>
       <td>
@@ -66,15 +48,7 @@ function TaskRow ({ task }) {
           task={task}
           fieldName="importance"
           priority={task.importance}
-          onChange={onPriorityChange}
-        />
-      </td>
-      <td>
-        <input
-          style={{ width: '95%'}}
-          type="text"
-          value={task.tags || ''}
-          onChange={onTagsChange}
+          onChange={(e) => task.set('importance', e.target.value)}
         />
       </td>
       <td>

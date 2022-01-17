@@ -1,19 +1,20 @@
 import * as dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
-import { PRIORITY_MAP } from '../constants/priorities';
-import { calculateDueDate, daysBetween } from './dates';
+import { daysBetween } from './dates';
+import { PRIORITY_MAP, PRIORITY_LEVEL } from '../constants/priorities';
+import { STATUSES } from '../constants/statuses';
 
 dayjs.extend(isBetween);
 
 export function calculateUrgency (difference) {
   if (difference === 0) {
-    return 'critical'
+    return PRIORITY_LEVEL.CRITICAL;
   } else if (difference === 1) {
-    return 'high'
+    return PRIORITY_LEVEL.HIGH;
   } else if (difference === 2) {
-    return 'medium'
+    return PRIORITY_LEVEL.MEDIUM;
   } else {
-    return 'low'
+    return PRIORITY_LEVEL.LOW;
   }
 }
 
@@ -28,20 +29,63 @@ export function calculateUrgencyForTask (task) {
   }
 }
 
-export function sortCompare (a, b) {
-  const aUrgency = PRIORITY_MAP[calculateUrgencyForTask(a)];
-  const aImportance = PRIORITY_MAP[a.importance];
-  const aPriority = aUrgency + aImportance;
+export function prioritySort (a, b, filters) {
+  const urgencyA = PRIORITY_MAP[a.urgency];
+  const urgencyB = PRIORITY_MAP[b.urgency];
+  const importanceA = PRIORITY_MAP[a.importance];
+  const importanceB = PRIORITY_MAP[b.importance];
 
-  const bUrgency = PRIORITY_MAP[calculateUrgencyForTask(b)];
-  const bImportance = PRIORITY_MAP[b.importance];
-  const bPriority = bUrgency + bImportance;
+  let priorityA
+  let priorityB
 
-  if (aPriority > bPriority) {
+  if (filters.priority === 'highest-priority') {
+    priorityA = urgencyA + importanceA;
+    priorityB = urgencyB + importanceB;
+  }
+
+  if (filters.priority === 'most-urgent') {
+    priorityA = urgencyA;
+    priorityB = urgencyB;
+  }
+
+  if (filters.priority === 'most-important') {
+    priorityA = importanceA;
+    priorityB = importanceB;
+  }
+
+  if (filters.priority === 'least-important') {
+    priorityA = importanceB;
+    priorityB = importanceA;
+  }
+
+  if (filters.priority === 'least-urgent') {
+    priorityA = urgencyB;
+    priorityB = urgencyA;
+  }
+
+  if (filters.priority === 'lowest-priority') {
+    priorityA = urgencyB + importanceB;
+    priorityB = urgencyA + importanceA;
+  }
+
+  if (filters.priority === 'due-date') {
+    if (!a.dueDate || !b.dueDate) return 0;
+
+    const dueDateA = dayjs(a.dueDate);
+    const dueDateB = dayjs(b.dueDate);
+
+    if (dueDateA.isAfter(dueDateB)) {
+      return 1
+    } else if (dueDateA.isBefore(dueDateB)) {
+      return -1
+    }
+  }
+
+  if (priorityA > priorityB) {
     return 1;
   }
 
-  if (aPriority < bPriority) {
+  if (priorityA < priorityB) {
     return -1;
   }
 
@@ -58,8 +102,14 @@ export function searchFilter (task, filters) {
   return title.match(new RegExp(query)) || tags.match(new RegExp(query))
 }
 
+export function projectFilter (task, filters) {
+  if (filters.project === '' || !filters.project) return true
+
+  return filters.project === task.project;
+}
+
 export function dateFilter (task, filters) {
-  const dueDate = calculateDueDate(task);
+  const dueDate = dayjs(task.dueDate);
   const today = dayjs();
   const nextWeek =  dayjs().add(7, 'day');
   const nextMonth = dayjs().add(30, 'day');
@@ -76,15 +126,6 @@ export function dateFilter (task, filters) {
     return true
   }
 }
-
-const STATUSES = Object.freeze({
-  INCOMPLETE: 'incomplete',
-  PLANNED: 'planned',
-  IN_PROGRESS: 'in-progress',
-  COMPLETED: 'completed',
-  DELEGATED: 'delegated',
-  BLOCKED: 'blocked',
-});
 
 export function statusFilter (task, filters) {
   const taskTask = task.status || 'planned';
@@ -113,5 +154,6 @@ export function filterTasks (tasksDB, filters) {
                .filter(task => dateFilter(task, filters))
                .filter(task => searchFilter(task, filters))
                .filter(task => statusFilter(task, filters))
-               .sort(sortCompare)
+               .filter(task => projectFilter(task, filters))
+               .sort((a, b) => prioritySort(a, b, filters))
 }

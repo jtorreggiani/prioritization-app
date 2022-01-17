@@ -1,6 +1,8 @@
 import React from 'react';
 import StatusSelect from './StatusSelect';
 import TimeframeSelect from './TimeframeSelect';
+import PriorityFilterSelect from './PriorityFilterSelect';
+import ProjectFilterSelect from './ProjectFilterSelect';
 
 function TaskFilters ({ filters, createTask }) {
   return (
@@ -31,6 +33,22 @@ function TaskFilters ({ filters, createTask }) {
             status={filters.status}
             onChange={filters.onStatusFilterChange}
             showIncomplete="true"
+          />
+        </div>
+
+        <div className="filter-input">
+          <label>Prioritization</label>
+          <PriorityFilterSelect
+            priority={filters.priority}
+            onChange={filters.onPriorityFilterChange}
+          />
+        </div>
+
+        <div className="filter-input">
+          <ProjectFilterSelect
+            project={filters.project}
+            onSelectProjectFilter={filters.onSelectProjectFilter}
+            default={{ value: 'any', label: 'Any'}}
           />
         </div>
       </div>

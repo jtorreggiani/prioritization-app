@@ -4,6 +4,8 @@ const DEFAULT_FILTERS = Object.freeze({
   query: '',
   status: 'incomplete',
   dateRange: '',
+  priority: 'highest-priority',
+  project: '',
 });
 
 export function useFilters () {
@@ -28,15 +30,30 @@ export function useFilters () {
   }
 
   function onStatusFilterChange (e: React.ChangeEvent<HTMLSelectElement>) {
-    setFilters({...filters, status: e.target.value })
+    setFilters({...filters, status: e.target.value });
+  }
+
+  function onPriorityFilterChange (e: React.ChangeEvent<HTMLSelectElement>) {
+    setFilters({...filters, priority: e.target.value });
+  }
+
+  function onProjectFilterChange (e: React.ChangeEvent<HTMLInputElement>) {
+    localStorage.setItem('PROJECT_FILTERS', e.target.value);
+  }
+
+  function onSelectProjectFilter (e: React.ChangeEvent<HTMLInputElement>) {
+    setFilters({...filters, project: e.target.value });
   }
 
   return {
     ...filters,
     onDateFilterChange,
+    onPriorityFilterChange,
     onSearchChange,
     onSearchKeyDown,
     onStatusFilterChange,
     submitSearch,
+    onProjectFilterChange,
+    onSelectProjectFilter,
   }
 }

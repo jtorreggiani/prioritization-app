@@ -16,11 +16,11 @@ function TaskTable ({ tasks }) {
       <thead>
         <tr>
           <th>Task</th>
+          <th>Project</th>
           <th>Status</th>
           <th>Due Date</th>
           <th>Urgency</th>
           <th>Importance</th>
-          <th>Tags</th>
           <th>Actions</th>
         </tr>
       </thead>

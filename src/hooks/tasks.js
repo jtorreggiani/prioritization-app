@@ -40,19 +40,14 @@ export function useTasks () {
   }
 
   function setTaskPriority (id, fieldName, value) {
-    const dueDate = fieldName === 'urgency'
-      ? null
-      : taskIndex[id]['dueDate'];
-
-    taskIndex[id]['dueDate'] = dueDate;
     taskIndex[id][fieldName] = value;
-    saveTaskIndex(taskIndex);
+    saveTaskIndex({ ...taskIndex });
   }
 
   function setDueDate (id, value) {
-    taskIndex[id]['urgency'] = null;
     taskIndex[id]['dueDate'] = value;
-    saveTaskIndex(taskIndex);
+    debugger;
+    saveTaskIndex({ ...taskIndex });
   }
 
   function decorateTask (task) {
