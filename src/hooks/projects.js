@@ -1,19 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { loadProjectString } from '../utils/local-storage';
+import { useState } from 'react';
+import { getProjectData, saveProjectData } from '../utils/local-storage';
 
-export function useProjects () {
-  const [projectString, setProjectString] = useState(loadProjectString());
-  const [projects, setProjects] = useState(projectString.split(' '));
-
-  function saveProjects () {
-    setProjects(projectString.split(' '));
-  }
+export function useProjectStore () {
+  const [dataString, setDataString] = useState(getProjectData());
+  const [data, setData] = useState(dataString.split(' '));
 
   return {
-    projectString,
-    projects,
-    setProjectString,
-    setProjects,
-    saveProjects,
+    data,
+    dataString,
+    set: setDataString,
+    save: () => {
+      saveProjectData(dataString);
+      setData(dataString.split(' '));
+    },
   }
 }

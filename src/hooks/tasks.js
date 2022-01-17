@@ -1,52 +1,44 @@
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { filterTasks } from '../utils/filters';
-import { loadLocalStorageData, saveToLocalStorage } from '../utils/local-storage';
+import { getTaskData, saveTaskData } from '../utils/local-storage';
 
-export function useTasks () {
-  const [taskIndex, setTaskIndex] = useState(loadLocalStorageData());
+export function useTaskStore () {
+  const [data, setTaskData] = useState(getTaskData());
 
-  function saveTaskIndex (newTaxIndex) {
-    saveToLocalStorage(taskIndex);
-    setTaskIndex({ ...taskIndex });
+  function saveTaskIndex (updatedData) {
+    saveTaskData({ ...updatedData });
+    // NOTE: Using spread operator to trigger state change.
+    setTaskData({ ...updatedData });
   }
 
   function createTask () {
     const id = uuidv4();
-    taskIndex[id] = {
+    data[id] = {
       id,
       title: '',
       urgency: 'low',
       importance: 'low',
     };
-    saveTaskIndex(taskIndex);
+
+    saveTaskIndex({ ...data });
   }
 
   function setTask (id, key, value) {
-    taskIndex[id][key] = value;
-    saveTaskIndex(taskIndex);
+    data[id][key] = value;
+    saveTaskIndex({ ...data });
   }
 
   function removeTask (id) {
-    delete taskIndex[id];
-    saveTaskIndex(taskIndex);
+    delete data[id];
+    saveTaskIndex({ ...data });
   }
 
   function duplicateTask (existingId) {
     const id = uuidv4();
-    const existingTask = taskIndex[existingId];
-    taskIndex[id] = { ...existingTask, id };
-    saveTaskIndex(taskIndex);
-  }
-
-  function setTaskPriority (id, fieldName, value) {
-    taskIndex[id][fieldName] = value;
-    saveTaskIndex({ ...taskIndex });
-  }
-
-  function setDueDate (id, value) {
-    taskIndex[id]['dueDate'] = value;
-    saveTaskIndex({ ...taskIndex });
+    const existingTask = data[existingId];
+    data[id] = { ...existingTask, id };
+    saveTaskIndex({ ...data });
   }
 
   function decorateTask (task) {
@@ -55,20 +47,19 @@ export function useTasks () {
     return {
       ...task,
       set: (key, value) => setTask(id, key, value),
-      setPriority: (key, value) => setTaskPriority(id, key, value),
-      setDueDate: (value) => setDueDate(id, value),
       remove: () => removeTask(id),
       duplicate: () => duplicateTask(id),
     }
   }
 
   return {
+    data,
     createTask,
     duplicateTask,
     removeTask,
-    setDueDate,
     setTask,
-    setTaskPriority,
-    where: (filters = {}) => filterTasks(taskIndex, filters).map(decorateTask),
+    where: (filters = {}) => {
+      return filterTasks(data, filters).map(decorateTask);
+    },
   }
 }

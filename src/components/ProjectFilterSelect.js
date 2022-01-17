@@ -1,69 +1,65 @@
 import React, { useState, useContext } from 'react';
-import { ProjectsContext } from '../contexts/projects';
-import { useProjects } from '../hooks/projects';
+import { FiltersContext } from '../contexts/filters';
+import ProjectSelect from './ProjectSelect';
 
-function ProjectFilterSelect ({
-  project,
-  onChange,
-  onSave,
-  defaultOption = { value: '', label: 'Any' }
-}) {
+export function ProjectInput ({ value, onChange }) {
+  return (
+    <input
+      type="text"
+      value={value}
+      onChange={onChange}
+      className="project-input"
+    />
+  )
+}
+
+function ProjectFilterLabel ({ isEditing, onClick }) {
+  return (
+    <label>
+      <span>Project</span>
+      <button className="edit-button" onClick={onClick}>
+        { isEditing ? '✔️' : '✎' }
+      </button>
+    </label>
+  )
+}
+
+function ProjectFilterSelect ({ value, onChange }) {
+  const { projectStore } = useContext(FiltersContext);
   const [isEditing, setIsEditing] = useState(false);
-  const {
-    projects,
-    projectString,
-    setProjectString,
-    saveProjects
-  } = useContext(ProjectsContext);
 
   function toggleEditing () {
     if (isEditing) {
-      saveProjects();
-    }
+      projectStore.save();
+    };
 
-    setIsEditing(!isEditing)
-
-  }
-
-  function onStringChange (e: React.FormEvent<HTMLInputElement>) {
-    const value = e.target.value;
-    localStorage.setItem('PROJECT_FILTERS', value);
-    setProjectString(value);
+    setIsEditing(!isEditing);
   }
 
   if (isEditing) {
     return (
       <>
-        <label>
-          Project
-          <button className="edit-button" onClick={toggleEditing}>✔️</button>
-        </label>
-
-        <input
-          type="text"
-          value={projectString}
-          onChange={onStringChange}
-          className="project-input"
+        <ProjectFilterLabel isEditing={isEditing} onClick={toggleEditing} />
+        <ProjectInput
+          onChange={(e) => projectStore.set(e.target.value)}
+          toggleEditing={toggleEditing}
+          value={projectStore.dataString}
         />
       </>
     )
-  } else {
-    return (
-      <>
-        <label>
-          Project
-          <button className="edit-button" onClick={toggleEditing}>✎</button>
-        </label>
-
-        <select key={project} value={project} onChange={onChange} className="filter-select">
-          <option value={defaultOption.value}>{defaultOption.label}</option>
-          {projects.map(project => {
-            return <option key={project} value={project}>{project}</option>
-          })}
-        </select>
-      </>
-    )
   }
+
+  return (
+    <>
+      <ProjectFilterLabel isEditing={isEditing} onClick={toggleEditing} />
+      <ProjectSelect
+        defaultLabel="Any"
+        onChange={onChange}
+        options={projectStore.data}
+        value={value}
+      />
+    </>
+  )
 }
 
 export default ProjectFilterSelect

@@ -1,14 +1,13 @@
 import React, { useContext } from 'react';
-import { useProjects } from '../hooks/projects';
-import { ProjectsContext } from '../contexts/projects';
+import { FiltersContext } from '../contexts/filters';
 
-function ProjectSelect ({ project, onChange }) {
-  const { projects } = useContext(ProjectsContext);
+function ProjectSelect ({ value, onChange, defaultLabel = 'None' }) {
+  const { projectStore } = useContext(FiltersContext);
 
   return (
-    <select value={project} onChange={onChange} className="task-select">
-      <option value="none">None</option>
-      {projects.map(project => {
+    <select className="task-select" value={value} onChange={onChange}>
+      <option value="">{ defaultLabel }</option>
+      {projectStore.data.map(project => {
         return <option key={project} value={project}>{project}</option>
       })}
     </select>

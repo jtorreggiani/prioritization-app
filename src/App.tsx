@@ -1,24 +1,23 @@
 import React from 'react';
 import TaskFilters from './components/TaskFilters';
 import TaskTable from './components/TaskTable';
-import { useFilters } from './hooks/filters';
-import { useTasks } from './hooks/tasks';
-import { useProjects } from './hooks/projects';
-import { ProjectsContext } from './contexts/projects';
-
+import { useFilterStore } from './hooks/filters';
+import { useTaskStore } from './hooks/tasks';
+import { useProjectStore } from './hooks/projects';
+import { FiltersContext } from './contexts/filters';
 import './App.css';
 
 function App() {
-  const tasks = useTasks();
-  const filters = useFilters();
-  const projects = useProjects();
+  const taskStore = useTaskStore();
+  const filterStore = useFilterStore();
+  const projectStore = useProjectStore();
 
   return (
     <div className="App">
-      <ProjectsContext.Provider value={projects}>
-        <TaskFilters filters={filters} createTask={tasks.createTask} />
-        <TaskTable tasks={tasks.where(filters)} />
-      </ProjectsContext.Provider>
+      <FiltersContext.Provider value={{ taskStore, filterStore, projectStore }}>
+        <TaskFilters />
+        <TaskTable />
+      </FiltersContext.Provider>
     </div>
   );
 }

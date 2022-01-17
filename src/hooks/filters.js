@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { loadFilters, saveFiltersToLocalStorage } from '../utils/local-storage';
+import { getFilterData, saveFilterData } from '../utils/local-storage';
 
-export function useFilters () {
+export function useFilterStore () {
   const [query, setQuery] = useState('');
-  const [filters, setFilters] = useState(loadFilters());
+  const [filters, setFilters] = useState(getFilterData());
 
   function onSearchChange (e: React.ChangeEvent<HTMLInputElement>) {
     setQuery(e.target.value);
@@ -19,13 +19,15 @@ export function useFilters () {
   }
 
   return {
-    ...filters,
-    set: (key, value) => {
-      setFilters({ ...filters, [key]: value });
-      saveFiltersToLocalStorage({ ...filters, [key]: value });
-    },
+    filters,
     onSearchChange,
     onSearchKeyDown,
     submitSearch,
+    set: (key, value) => {
+      filters[key] = value;
+
+      setFilters({ ...filters });
+      saveFilterData({ ...filters });
+    },
   }
 }

@@ -115,18 +115,22 @@ export function durationFilter (task, filters) {
 }
 
 export function dateFilter (task, filters) {
+  const { timeframe } = filters;
+
+  if (timeframe && timeframe !== '' && !task.dueDate) return false;
+
   const dueDate = dayjs(task.dueDate);
   const today = dayjs();
   const nextWeek =  dayjs().add(7, 'day');
   const nextMonth = dayjs().add(30, 'day');
 
-  if (filters.dateRange === 'today') {
+  if (filters.timeframe === 'today') {
     return dayjs(dueDate).isSame(today, 'day')
-  } else if (filters.dateRange === 'week') {
+  } else if (filters.timeframe === 'week') {
     return dayjs(dueDate).isBetween(today, nextWeek, 'day', '[]')
-  } else if (filters.dateRange === 'month') {
+  } else if (filters.timeframe === 'month') {
     return dayjs(dueDate).isBetween(today, nextMonth, 'day', '[]')
-  } else if (filters.dateRange === 'overdue') {
+  } else if (filters.timeframe === 'overdue') {
     return dayjs(dueDate).isBefore(today, 'day')
   } else {
     return true
@@ -149,7 +153,7 @@ export function statusFilter (task, filters) {
       return taskTask === STATUSES.COMPLETED;
     case STATUSES.DELEGATED:
       return taskTask === STATUSES.DELEGATED;
-    case STATUSES.DELEGATED:
+    case STATUSES.SCHEDULED:
       return taskTask === STATUSES.SCHEDULED;
     default:
       console.log(`No filter ${filters.status}.`);

@@ -1,9 +1,9 @@
 import React from 'react';
 
-function StatusSelect ({ dateRange, onChange }) {
+function TimeframeSelect ({ timeframe, onChange }) {
   return (
-    <select value={dateRange} onChange={onChange}>
-      <option value="any">Any Time</option>
+    <select value={timeframe} onChange={onChange}>
+      <option value="">Any</option>
       <option value="overdue">Overdue</option>
       <option value="today">Today</option>
       <option value="week">Next 7 days</option>
@@ -12,4 +12,4 @@ function StatusSelect ({ dateRange, onChange }) {
   )
 }
 
-export default StatusSelect;
+export default TimeframeSelect;

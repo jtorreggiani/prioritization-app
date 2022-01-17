@@ -17,7 +17,7 @@ function TaskRow ({ task }) {
       </td>
       <td>
         <ProjectSelect
-          project={task.project}
+          value={task.project}
           onChange={(e) => task.set('project', e.target.value)}
         />
       </td>

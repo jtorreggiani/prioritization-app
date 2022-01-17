@@ -1,57 +1,55 @@
 export const TASK_DATA_KEY = 'TASK_DATA';
 export const PROJECT_FILTERS_KEY = 'PROJECT_FILTERS';
 export const TASK_FILTERS_KEY = 'TASK_FILTERS';
+export const DEFAULT_PROJECTS = 'Work Side-Project Recreation';
 
-export function loadLocalStorageData () {
-  const existingData = localStorage.getItem(TASK_DATA_KEY);
+export const DEFAULT_FILTERS = Object.freeze({
+  timeframe: '',
+  priority: 'highest-priority',
+  project: '',
+  query: '',
+  status: 'incomplete',
+});
+
+export function getLocalStorageData (key, defaultData) {
+  const existingData = localStorage.getItem(key);
 
   if (existingData) {
     return JSON.parse(existingData);
   } else {
-    localStorage.setItem(TASK_DATA_KEY, '{}');
-    return {};
+    saveToLocalStorage(key, defaultData);
+    return defaultData;
   }
 }
 
-export function saveToLocalStorage (data) {
-  localStorage.setItem(TASK_DATA_KEY, JSON.stringify(data));
+export function saveToLocalStorage (key, data) {
+  localStorage.setItem(key, JSON.stringify(data));
 }
 
-export function loadProjectString () {
-  const existingData = localStorage.getItem(PROJECT_FILTERS_KEY);
-
-  if (existingData && existingData !== '') {
-    return existingData;
-  } else {
-    localStorage.setItem(PROJECT_FILTERS_KEY, 'work side-project recreation');
-    return {};
-  }
+export function getTaskData () {
+  return getLocalStorageData(TASK_DATA_KEY, {});
 }
 
-export function loadProjects () {
-  return loadProjectString().split(' ');
+export function getProjectData () {
+  return getLocalStorageData(PROJECT_FILTERS_KEY, DEFAULT_PROJECTS);
 }
 
-const DEFAULT_FILTERS = Object.freeze({
-  query: '',
-  status: 'incomplete',
-  dateRange: '',
-  priority: 'highest-priority',
-  project: '',
-});
-
-export function loadFilters () {
-  const existingData = localStorage.getItem(TASK_FILTERS_KEY);
-
-  if (existingData && existingData !== '') {
-    console.log(JSON.parse(existingData))
-    return JSON.parse(existingData);
-  } else {
-    localStorage.setItem(TASK_FILTERS_KEY, JSON.stringify(DEFAULT_FILTERS));
-    return DEFAULT_FILTERS;
-  }
+export function getFilterData () {
+  return getLocalStorageData(TASK_FILTERS_KEY, DEFAULT_FILTERS);
 }
 
-export function saveFiltersToLocalStorage (data) {
-  localStorage.setItem(TASK_FILTERS_KEY, JSON.stringify(data));
+export function getProjects () {
+  return getProjectData().split(' ');
+}
+
+export function saveFilterData (data) {
+  saveToLocalStorage(TASK_FILTERS_KEY, data);
+}
+
+export function saveTaskData (data) {
+  saveToLocalStorage(TASK_DATA_KEY, data);
+}
+
+export function saveProjectData (data) {
+  saveToLocalStorage(PROJECT_FILTERS_KEY, data);
 }
