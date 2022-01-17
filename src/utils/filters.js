@@ -91,7 +91,7 @@ export function statusFilter (task, filters) {
 
   switch (filters.status) {
     case STATUSES.INCOMPLETE:
-      return taskTask !== STATUSES.INCOMPLETE;
+      return taskTask !== STATUSES.COMPLETED;
     case STATUSES.PLANNED:
       return taskTask === STATUSES.PLANNED;
     case STATUSES.IN_PROGRESS:
