@@ -1,4 +1,5 @@
 export const TASK_DATA_KEY = 'TASK_DATA';
+export const PROJECT_FILTERS_KEY = 'PROJECT_FILTERS';
 
 export function loadLocalStorageData () {
   const existingData = localStorage.getItem(TASK_DATA_KEY);
@@ -13,4 +14,12 @@ export function loadLocalStorageData () {
 
 export function saveToLocalStorage (data) {
   localStorage.setItem(TASK_DATA_KEY, JSON.stringify(data));
+}
+
+export function loadProjectString () {
+  return localStorage.getItem(PROJECT_FILTERS_KEY) || '';
+}
+
+export function loadProjects () {
+  return loadProjectString().split(' ');
 }

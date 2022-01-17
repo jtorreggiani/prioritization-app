@@ -1,7 +1,8 @@
 import React from 'react';
+import { loadProjects } from '../utils/local-storage';
 
 function ProjectSelect ({ project, onChange }) {
-  const projects = localStorage.getItem('PROJECT_FILTERS').split(' ');
+  const projects = loadProjects();
 
   return (
     <select value={project} onChange={onChange}>
