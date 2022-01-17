@@ -1,9 +1,9 @@
 import React from 'react';
 
-function StatusSelect ({ status, onChange }) {
+function StatusSelect ({ status, onChange, showIncomplete = false }) {
   return (
     <select value={status} onChange={onChange}>
-      <option value="incomplete">Incomplete</option>
+      { showIncomplete && <option value="incomplete">Incomplete</option> }
       <option value="planned">Planned</option>
       <option value="in-progress">In Progress</option>
       <option value="blocked">Blocked</option>

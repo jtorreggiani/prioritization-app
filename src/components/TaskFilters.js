@@ -30,6 +30,7 @@ function TaskFilters ({ filters, createTask }) {
           <StatusSelect
             status={filters.status}
             onChange={filters.onStatusFilterChange}
+            showIncomplete="true"
           />
         </div>
       </div>

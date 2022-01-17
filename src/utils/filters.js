@@ -67,9 +67,9 @@ export function dateFilter (task, filters) {
   if (filters.dateRange === 'today') {
     return dayjs(dueDate).isSame(today, 'day')
   } else if (filters.dateRange === 'week') {
-    return dayjs(dueDate).isBetween(today, nextWeek, 'day')
+    return dayjs(dueDate).isBetween(today, nextWeek, 'day', '[]')
   } else if (filters.dateRange === 'month') {
-    return dayjs(dueDate).isBetween(today, nextMonth, 'day')
+    return dayjs(dueDate).isBetween(today, nextMonth, 'day', '[]')
   } else if (filters.dateRange === 'overdue') {
     return dayjs(dueDate).isBefore(today, 'day')
   } else {
@@ -77,16 +77,34 @@ export function dateFilter (task, filters) {
   }
 }
 
+const STATUSES = Object.freeze({
+  INCOMPLETE: 'incomplete',
+  PLANNED: 'planned',
+  IN_PROGRESS: 'in-progress',
+  COMPLETED: 'completed',
+  DELEGATED: 'delegated',
+  BLOCKED: 'blocked',
+});
+
 export function statusFilter (task, filters) {
   const taskTask = task.status || 'planned';
-  const filterStatus = filters.status;
 
-  if (filterStatus === '') return true
-  if (filterStatus === 'planned') return taskTask === 'planned'
-  if (filterStatus === 'in-progress') return taskTask === 'in-progress'
-  if (filterStatus === 'completed') return taskTask === 'completed'
-  if (filterStatus === 'delegated') return taskTask === 'delegated'
-  if (filterStatus === 'incomplete') return taskTask !== 'completed'
+  switch (filters.status) {
+    case STATUSES.INCOMPLETE:
+      return taskTask !== STATUSES.INCOMPLETE;
+    case STATUSES.PLANNED:
+      return taskTask === STATUSES.PLANNED;
+    case STATUSES.IN_PROGRESS:
+      return taskTask === STATUSES.IN_PROGRESS;
+    case STATUSES.BLOCKED:
+        return taskTask === STATUSES.BLOCKED;
+    case STATUSES.COMPLETED:
+      return taskTask === STATUSES.COMPLETED;
+    case STATUSES.DELEGATED:
+      return taskTask === STATUSES.DELEGATED;
+    default:
+      console.log(`No filter ${filters.status}.`);
+  }
 }
 
 export function filterTasks (tasksDB, filters) {
