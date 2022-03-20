@@ -71,8 +71,8 @@ export function prioritySort (a, b, filters) {
   if (filters.priority === 'due-date') {
     if (!a.dueDate || !b.dueDate) return 0;
 
-    const timeStringA = a.dueAt || '00:00';
-    const timeStringB = b.dueAt || '00:00';
+    const timeStringA = a.dueAt || '23:59';
+    const timeStringB = b.dueAt || '23:59';
 
     const dueDateA = dayjs(`${a.dueDate}T${timeStringA}`);
     const dueDateB = dayjs(`${b.dueDate}T${timeStringB}`);
