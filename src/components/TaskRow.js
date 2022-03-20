@@ -30,10 +30,17 @@ function TaskRow ({ task }) {
       <td>
         <input
           type="date"
-          id="dueDate"
           name="dueDate"
           value={task.dueDate}
           onChange={(e) => task.set('dueDate', e.target.value)}
+        />
+      </td>
+      <td>
+        <input
+          type="time"
+          name="dueAt"
+          value={task.dueAt}
+          onChange={(e) => task.set('dueAt', e.target.value)}
         />
       </td>
       <td>

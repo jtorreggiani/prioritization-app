@@ -65,3 +65,7 @@ label {
 .project-input {
   width: 20em;
 }
+
+input[type="time"] {
+  min-width: 8em;
+}

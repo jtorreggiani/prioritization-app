@@ -9,7 +9,8 @@ export function TaskTableHead () {
         <th>Task</th>
         <th>Project</th>
         <th>Status</th>
-        <th>Due Date</th>
+        <th>Date</th>
+        <th>Time</th>
         <th>Urgency</th>
         <th>Importance</th>
         <th>Duration</th>
