@@ -6,6 +6,7 @@ function TimeframeSelect ({ timeframe, onChange }) {
       <option value="">Any</option>
       <option value="overdue">Overdue</option>
       <option value="today">Today</option>
+      <option value="tomorrow">Tomorrow</option>
       <option value="week">Next 7 days</option>
       <option value="month">Next 30 days</option>
     </select>

@@ -8,15 +8,17 @@ function DurationSelect ({
   return (
     <select className="task-select" value={duration} onChange={(e) => onChange(e)}>
       <option value={defaultOption.value}>{defaultOption.label}</option>
-      <option value="one-minute">1 minute</option>
-      <option value="five-minutes">5 minutes</option>
-      <option value="10-minutes">15 minutes</option>
-      <option value="30-minutes">30 minutes</option>
-      <option value="45-minutes">45 minutes</option>
-      <option value="1-hour">1 hour</option>
-      <option value="2-hours">2 hours</option>
-      <option value="4-hours">4 hours</option>
-      <option value="1-day">1 day</option>
+      <option value="1">1 minute</option>
+      <option value="5">5 minutes</option>
+      <option value="15">15 minutes</option>
+      <option value="30">30 minutes</option>
+      <option value="45">45 minutes</option>
+      <option value="60">1 hour</option>
+      <option value="120">2 hours</option>
+      <option value="240">4 hours</option>
+      <option value="480">8 hours</option>
+      <option value="1440">1 day</option>
+      <option value="2880">2 days</option>
     </select>
   )
 }

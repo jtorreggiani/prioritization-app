@@ -20,7 +20,11 @@ function TaskFilters () {
           onKeyDown={filterStore.onSearchKeyDown}
         />
         <button onClick={filterStore.submitSearch}>Search</button>
-        <button onClick={taskStore.createTask}>Create Task</button>
+        <button onClick={() => {
+          taskStore.createTask(filters)
+        }}>
+          Create Task
+        </button>
       </div>
 
       <div className="filter-input-group">
