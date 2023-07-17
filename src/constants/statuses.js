@@ -6,4 +6,5 @@ export const STATUSES = Object.freeze({
   DELEGATED: 'delegated',
   BLOCKED: 'blocked',
   SCHEDULED: 'scheduled',
+  CANCELLED: 'cancelled',
 });

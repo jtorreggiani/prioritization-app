@@ -22,9 +22,30 @@ export function TaskTableHead () {
 
 export function TaskTableBody ({ tasks }) {
   return (
-    <tbody>
-      {tasks.map(task => <TaskRow key={task.id} task={task} /> )}
-    </tbody>
+    <>
+      <tbody>
+        {tasks.map(task => <TaskRow key={task.id} task={task} /> )}
+      </tbody>
+    </>
+  )
+}
+
+export function TaskTableFoot () {
+  const { taskStore, filterStore: { filters } } = useContext(FiltersContext);
+
+  return (
+    <tfoot>
+      <tr>
+        <td colSpan="9" style={{ textAlign: 'center' }}>
+          <button
+            style={{ width: '20%' }}
+            onClick={() => taskStore.createTask(filters)}
+          >
+            Create Task
+          </button>
+        </td>
+      </tr>
+    </tfoot>
   )
 }
 
@@ -35,6 +56,7 @@ function TaskTable () {
     <table>
       <TaskTableHead />
       <TaskTableBody tasks={taskStore.where(filters)} />
+      <TaskTableFoot />
     </table>
   )
 }

@@ -9,6 +9,10 @@ export function useFilterStore () {
     setQuery(e.target.value);
   }
 
+  function refresh() {
+    setFilters({ ...filters });
+  }
+
   function submitSearch () {
     setFilters({ ...filters, query });
   }
@@ -23,6 +27,7 @@ export function useFilterStore () {
     onSearchChange,
     onSearchKeyDown,
     submitSearch,
+    refresh,
     set: (key, value) => {
       filters[key] = value;
 

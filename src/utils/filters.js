@@ -38,6 +38,11 @@ export function prioritySort (a, b, filters) {
   let priorityA
   let priorityB
 
+  // Sort tasks in progress to the top
+  if (a.status === 'in-progress' || b.status === 'in-progress') {
+    return a.status === 'in-progress' ? -1 : 1;
+  }
+
   if (filters.priority === 'highest-priority') {
     priorityA = urgencyA + importanceA;
     priorityB = urgencyB + importanceB;
@@ -129,6 +134,8 @@ export function dateFilter (task, filters) {
 
   if (filters.timeframe === 'today') {
     return dayjs(dueDate).isSame(today, 'day')
+  } else if (filters.timeframe === 'tomorrow') {
+    return dayjs(dueDate).isSame(today.add(1, 'day'), 'day')
   } else if (filters.timeframe === 'week') {
     return dayjs(dueDate).isBetween(today, nextWeek, 'day', '[]')
   } else if (filters.timeframe === 'month') {
@@ -145,7 +152,7 @@ export function statusFilter (task, filters) {
 
   switch (filters.status) {
     case STATUSES.INCOMPLETE:
-      return taskTask !== STATUSES.COMPLETED;
+      return taskTask !== STATUSES.COMPLETED && taskTask !== STATUSES.CANCELLED;
     case STATUSES.PLANNED:
       return taskTask === STATUSES.PLANNED;
     case STATUSES.IN_PROGRESS:
@@ -156,8 +163,6 @@ export function statusFilter (task, filters) {
       return taskTask === STATUSES.COMPLETED;
     case STATUSES.DELEGATED:
       return taskTask === STATUSES.DELEGATED;
-    case STATUSES.SCHEDULED:
-      return taskTask === STATUSES.SCHEDULED;
     default:
       console.log(`No filter ${filters.status}.`);
   }
