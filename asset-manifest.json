@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/prioritization-app/static/css/main.e261fe51.css",
+    "main.js": "/prioritization-app/static/js/main.42a49c68.js",
+    "static/js/787.d677bca1.chunk.js": "/prioritization-app/static/js/787.d677bca1.chunk.js",
+    "index.html": "/prioritization-app/index.html",
+    "main.e261fe51.css.map": "/prioritization-app/static/css/main.e261fe51.css.map",
+    "main.42a49c68.js.map": "/prioritization-app/static/js/main.42a49c68.js.map",
+    "787.d677bca1.chunk.js.map": "/prioritization-app/static/js/787.d677bca1.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e261fe51.css",
+    "static/js/main.42a49c68.js"
+  ]
+}
