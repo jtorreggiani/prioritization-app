@@ -12,7 +12,13 @@ td, th {
 }
 
 .title-column {
-  width: 30%;
+  display: block;
+  width: 400px;
+}
+
+.title-input {
+  margin: 0;
+  width: 98%;
 }
 
 .task-select {
@@ -68,4 +74,8 @@ label {
 
 input[type="time"] {
   min-width: 8em;
+}
+
+.overflow-x-scroll {
+  overflow-x: scroll;
 }

@@ -3,13 +3,24 @@ import PrioritySelect from './PrioritySelect';
 import StatusSelect from './StatusSelect';
 import ProjectSelect from './ProjectSelect';
 import DurationSelect from './DurationSelect';
+import * as dayjs from 'dayjs';
+
+function actualDurationInMinutes (task) {
+  if (!task.startedAt || !task.completedAt) {
+    return null;
+  }
+  const startedAt = new Date(task.startedAt);
+  const completedAt = new Date(task.completedAt);
+  const duration = completedAt - startedAt;
+  return Math.round(duration / 1000 / 60);
+}
 
 function TaskRow ({ task }) {
   return (
     <tr>
       <td className="title-column">
         <input
-          style={{ width: '95%' }}
+          className="title-input"
           type="text"
           value={task.title}
           onChange={(e) => task.set('title', e.target.value)}
@@ -24,8 +35,15 @@ function TaskRow ({ task }) {
       <td>
         <StatusSelect
           status={task.status}
-          onChange={(e) => task.set('status', e.target.value)}
-        />
+          onChange={(e) => {
+            task.set('status', e.target.value)
+            if (e.target.value === 'completed') {
+              task.set('completedAt', new Date().toISOString())
+            }
+            if (e.target.value === 'in-progress') {
+              task.set('startedAt', new Date().toISOString())
+            }
+          }}/>
       </td>
       <td>
         <input
@@ -42,6 +60,12 @@ function TaskRow ({ task }) {
           value={task.dueAt}
           onChange={(e) => task.set('dueAt', e.target.value)}
         />
+      </td>
+      <td>
+        { task.startedAt ? dayjs(task.startedAt).format('MM/DD/YYYY') : null }
+      </td>
+      <td>
+        { task.startedAt ? dayjs(task.startedAt).format('HH:mm A') : null }
       </td>
       <td>
         <PrioritySelect
@@ -64,6 +88,9 @@ function TaskRow ({ task }) {
           duration={task.duration}
           onChange={(e) => task.set('duration', e.target.value)}
         />
+      </td>
+      <td>
+        { actualDurationInMinutes(task) }
       </td>
       <td>
         <button onClick={task.remove}>🗑️</button>

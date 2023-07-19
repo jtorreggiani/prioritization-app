@@ -9,11 +9,14 @@ export function TaskTableHead () {
         <th>Task</th>
         <th>Project</th>
         <th>Status</th>
-        <th>Date</th>
-        <th>Time</th>
+        <th>Planned Date</th>
+        <th>Planned Time</th>
+        <th>Start Date</th>
+        <th>Start Time</th>
         <th>Urgency</th>
         <th>Importance</th>
-        <th>Duration</th>
+        <th>Estimate</th>
+        <th>Actual</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -36,7 +39,7 @@ export function TaskTableFoot () {
   return (
     <tfoot>
       <tr>
-        <td colSpan="9" style={{ textAlign: 'center' }}>
+        <td colSpan="12" style={{ textAlign: 'center' }}>
           <button
             style={{ width: '20%' }}
             onClick={() => taskStore.createTask(filters)}
@@ -53,11 +56,13 @@ function TaskTable () {
   const { taskStore, filterStore: { filters } } = useContext(FiltersContext);
 
   return (
-    <table>
-      <TaskTableHead />
-      <TaskTableBody tasks={taskStore.where(filters)} />
-      <TaskTableFoot />
-    </table>
+    <div className="overflow-x-scroll">
+      <table>
+        <TaskTableHead />
+        <TaskTableBody tasks={taskStore.where(filters)} />
+        <TaskTableFoot />
+      </table>
+    </div>
   )
 }
 
