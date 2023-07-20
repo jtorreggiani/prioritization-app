@@ -1,10 +1,50 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
+import { createPortal } from 'react-dom';
 import StatusSelect from './StatusSelect';
 import TimeframeSelect from './TimeframeSelect';
 import PriorityFilterSelect from './PriorityFilterSelect';
 import ProjectFilterSelect from './ProjectFilterSelect';
 import DurationSelect from './DurationSelect';
 import { FiltersContext } from '../contexts/filters';
+
+export function ModalContent({ onClose }) {
+  const { filterStore: { columns, toggleColumn } } = useContext(FiltersContext);
+  return (
+    <div className="modal">
+      <div className="modal-container">
+        <ul className="column-select">
+          {Object.keys(columns).map(key => (
+            <li key={key}>
+              <input
+                type="checkbox"
+                checked={columns[key].visible}
+                onChange={() => toggleColumn(key)}
+                style={{ display: 'inline-block' }}
+              />
+              <label style={{ display: 'inline-block' }}>{columns[key].label}</label>
+            </li>
+          ))}
+        </ul>
+        <button onClick={onClose}>Close</button>
+      </div>
+    </div>
+  );
+}
+
+export function ColumnSettings() {
+  const [showModal, setShowModal] = useState(false);
+  return (
+    <>
+      <button onClick={() => setShowModal(true)}>
+        Column Settings
+      </button>
+      {showModal && createPortal(
+        <ModalContent onClose={() => setShowModal(false)} />,
+        document.body
+      )}
+    </>
+  );
+}
 
 function TaskFilters () {
   const { filterStore, taskStore } = useContext(FiltersContext);
@@ -68,6 +108,10 @@ function TaskFilters () {
             onChange={(e) => filterStore.set('project', e.target.value)}
             default={{ value: 'any', label: 'Any'}}
           />
+        </div>
+
+        <div className="filter-input">
+          <ColumnSettings />
         </div>
       </div>
     </div>

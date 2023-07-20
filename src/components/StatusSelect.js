@@ -7,6 +7,7 @@ function StatusSelect ({ status, onChange, showIncomplete = false }) {
       <option value="planned">Planned</option>
       <option value="scheduled">Scheduled</option>
       <option value="in-progress">In Progress</option>
+      <option value="paused">Paused</option>
       <option value="blocked">Blocked</option>
       <option value="delegated">Delegated</option>
       <option value="completed">Completed</option>

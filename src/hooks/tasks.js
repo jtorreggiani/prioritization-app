@@ -9,7 +9,9 @@ const nextWeek =  dayjs().add(7, 'day');
 const nextMonth = dayjs().add(30, 'day');
 
 export function dateForFilter (timeframe) {
-  if (!timeframe || timeframe === '') return '';
+  if (!timeframe || timeframe === '') {
+    return today.format('YYYY-MM-DD');
+  }
 
   if (timeframe === 'today') {
     return today.format('YYYY-MM-DD');
@@ -35,17 +37,22 @@ export function useTaskStore () {
   }
 
   function createTask (options = { project: '', timeframe: '' }) {
-    const dueDate = dateForFilter(options.timeframe)
-    console.log('new', options.timeframe);
+    const dueDate = dateForFilter(options.timeframe);
+    const dueAt = dayjs().add(5, 'minutes').format('HH:mm');
     const id = uuidv4();
     data[id] = {
       id,
       title: '',
+      status: 'planned',
       urgency: 'low',
       importance: 'low',
       duration: '5',
       project: options.project,
       dueDate: dueDate,
+      actualDuration: 0,
+      startedAt: null,
+      completedAt: null,
+      dueAt,
     };
 
     saveTaskIndex({ ...data });
@@ -68,6 +75,17 @@ export function useTaskStore () {
     saveTaskIndex({ ...data });
   }
 
+  function pauseTasks(id) {
+    Object.keys(data).forEach(key => {
+      if (data[key].status === 'in-progress' && key !== id) {
+        data[key].status = 'paused';
+        const newDuration = dayjs().diff(data[key].startedAt, 'second') + data[key]['actualDuration'];
+        data[key]['actualDuration'] = newDuration;
+      }
+    });
+    saveTaskIndex({ ...data });
+  }
+
   function decorateTask (task) {
     const { id } = task;
 
@@ -85,6 +103,7 @@ export function useTaskStore () {
     duplicateTask,
     removeTask,
     setTask,
+    pauseTasks,
     where: (filters = {}) => {
       return filterTasks(data, filters).map(decorateTask);
     },

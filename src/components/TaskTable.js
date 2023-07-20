@@ -2,22 +2,15 @@ import React, { useContext } from 'react';
 import TaskRow from './TaskRow';
 import { FiltersContext } from '../contexts/filters';
 
-export function TaskTableHead () {
+export function TaskTableHead ({ columns, toggleColumn }) {
   return (
     <thead>
       <tr>
-        <th>Task</th>
-        <th>Project</th>
-        <th>Status</th>
-        <th>Planned Date</th>
-        <th>Planned Time</th>
-        <th>Start Date</th>
-        <th>Start Time</th>
-        <th>Urgency</th>
-        <th>Importance</th>
-        <th>Estimate</th>
-        <th>Actual</th>
-        <th>Actions</th>
+        {Object.keys(columns).map(key => (
+          <th key={key} width="0.5px" style={{minWidth: '0px'}}>
+            { columns[key].visible ? columns[key].label : '+' }
+          </th>
+        ))}
       </tr>
     </thead>
   )
@@ -34,7 +27,10 @@ export function TaskTableBody ({ tasks }) {
 }
 
 export function TaskTableFoot () {
-  const { taskStore, filterStore: { filters } } = useContext(FiltersContext);
+  const {
+    taskStore,
+    filterStore: { filters },
+  } = useContext(FiltersContext);
 
   return (
     <tfoot>
@@ -53,13 +49,19 @@ export function TaskTableFoot () {
 }
 
 function TaskTable () {
-  const { taskStore, filterStore: { filters } } = useContext(FiltersContext);
+  const {
+    taskStore,
+    filterStore: { filters, columns, toggleColumn },
+  } = useContext(FiltersContext);
 
   return (
     <div className="overflow-x-scroll">
       <table>
-        <TaskTableHead />
-        <TaskTableBody tasks={taskStore.where(filters)} />
+        <TaskTableHead columns={columns} toggleColumn={toggleColumn} />
+        <TaskTableBody
+          columns={columns}
+          tasks={taskStore.where(filters)}
+        />
         <TaskTableFoot />
       </table>
     </div>

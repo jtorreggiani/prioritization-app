@@ -16,6 +16,7 @@ function DurationSelect ({
       <option value="60">1 hour</option>
       <option value="120">2 hours</option>
       <option value="240">4 hours</option>
+      <option value="300">5 hours</option>
       <option value="480">8 hours</option>
       <option value="1440">1 day</option>
       <option value="2880">2 days</option>

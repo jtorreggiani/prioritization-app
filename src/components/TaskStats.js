@@ -17,7 +17,7 @@ function TaskStats () {
 
   return (
     <>
-      <p>Total duration: {totalDuration.toFixed(2)} hours</p>
+      <p className="stats">Total duration: {totalDuration.toFixed(2)} hours</p>
     </>
   )
 }

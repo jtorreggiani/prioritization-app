@@ -9,16 +9,23 @@ td, th {
   text-align: left;
   padding: 8px;
   min-width: 80px;
+  border-bottom: none;
 }
 
 .title-column {
   display: block;
   width: 400px;
+  margin: none;
+  padding: none;
+  border-bottom: none;
 }
 
 .title-input {
-  margin: 0;
+  font-size: 1em;
   width: 98%;
+  padding: none;
+  outline: none;
+  margin-right: 4em;
 }
 
 .task-select {
@@ -78,4 +85,61 @@ input[type="time"] {
 
 .overflow-x-scroll {
   overflow-x: scroll;
+}
+
+.clipping-container {
+  position: relative;
+  border: 1px solid #aaa;
+  margin-bottom: 12px;
+  padding: 12px;
+  width: 250px;
+  height: 80px;
+  overflow: hidden;
+}
+
+.modal {
+  display: block;
+  justify-content: space-evenly;
+  align-items: center;
+  box-shadow: rgba(100, 100, 111, 0.3) 0px 7px 29px 0px;
+  background-color: white;
+  border: 2px solid rgb(240, 240, 240);
+  border-radius: 12px;
+  position:  absolute;
+  width: 500px;
+  top: 70px;
+  left: calc(50% - 250px);
+  bottom: 70px;
+}
+
+.modal-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 100%;
+  text-align: center;
+}
+
+.column-select {
+  text-align: left;
+  list-style: none;
+}
+
+.actual-duration-column {}
+
+.in-progress-task {
+  background-color: #E6F5FF;
+}
+
+.overdue-task {
+  background-color: #FFEBEB;;
+}
+
+.completed-task {
+  background-color: #C3FFC3;
+}
+
+.stats {
+  margin-left: 0.5em;
 }
